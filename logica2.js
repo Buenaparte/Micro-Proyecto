@@ -5,128 +5,193 @@ const verde = document.querySelector('.cols');
 const amarillo = document.querySelector('.cols4');
 const azul = document.querySelector('.cols3');
 const p = document.querySelector('.Fin');
-const reiniciarJuego = document.querySelector('.Quinto');
+const quinto = document.querySelector('.Quinto');
 const menuPrincipal = document.querySelector('.Cuarto');
-const gameStatus = document.querySelector('.game-status'); // "Juego en curso"
+const gameStatus = document.querySelector('.game-status'); 
 const labelScore = document.querySelector('.score');
 const labelHighscoreFinal = document.querySelector('.highscore-final');
-let ronda = 0;
-let secuencia = [];
-let jugadorSecuencia = [];
-let confirmacion = true;
-let puntaje = 0;
 let highscore = localStorage.getItem('highscore') || 0;
+var a = 0;
+var b = 0;
+var c = 0;
+var d = 0;
+var i = 0;
+var f = 0;
+var g = 0;
+var h = 0;
+var ronda = 0;
+var prueba =0;
+var puntaje = 0;
+var confirmacion = true;
 
-function iniciar() {
-    if (!confirmacion) return;
 
-    ronda = 1; // Comenzar desde la ronda 1
-    secuencia = [];
-    jugadorSecuencia = [];
-
-    for (let i = 0; i < ronda; i++) {
-        const brillar = Math.floor(Math.random() * 4);
-        secuencia.push(brillar);
-    }
-
-    mostrarSecuencia();
-    gameStatus.style.display = 'block'; // Mostrar "Juego en curso"
-}
-
-function mostrarSecuencia() {
-    let i = 0;
-    const intervalo = setInterval(() => {
-        const color = secuencia[i];
-        iluminarColor(color);
-        i++;
-        if (i >= secuencia.length) {
-            clearInterval(intervalo);
+ function iniciar(){
+   ronda++;
+   let comprabacion_ronda = 0;
+   while(comprabacion_ronda < ronda){
+    const brillar = Math.trunc(Math.random()*(4));
+    console.log(brillar);
+    if(brillar == 0){
+         rojo.classList.add('brillar');
+       setTimeout(() => {
+         rojo.classList.remove('brillar');
+       }, 500);
+       a++;
+      } 
+    if(brillar == 1){
+         verde.classList.add('brillar');
+         setTimeout(() => {
+            verde.classList.remove('brillar');
+         }, 500);
+         b++;
+        } 
+    if(brillar == 2){
+         amarillo.classList.add('brillar');
+         setTimeout(() => {
+            amarillo.classList.remove('brillar');
+         }, 500);
+         c++;
+        } 
+    if(brillar == 3){
+       azul.classList.add('brillar');
+       setTimeout(() => {
+         azul.classList.remove('brillar');
+           }, 500);
+       d++;
         }
-    }, 500);
-}
+        comprabacion_ronda++; 
+       } 
+ }
 
-function iluminarColor(color) {
-    let elemento;
-    switch (color) {
-        case 0: elemento = rojo; break;
-        case 1: elemento = verde; break;
-        case 2: elemento = amarillo; break;
-        case 3: elemento = azul; break;
-    }
-
-    elemento.classList.add('brillar');
+ function verificar(){
+   if( a == i && b == f && c == g && d == h){
+       puntaje += 10;
+       labelScore.textContent = puntaje;
+       a = 0;
+       b = 0;
+       c = 0;
+       d = 0;
+       i = 0;
+       f = 0;
+       g = 0;
+       h = 0;
+       if (puntaje > highscore) {
+         highscore = puntaje;
+         localStorage.setItem('highscore', highscore);
+       }
     setTimeout(() => {
-        elemento.classList.remove('brillar');
-    }, 300);
-}
-
-function verificar() {
-    if (jugadorSecuencia.length === secuencia.length) {
-        if (jugadorSecuencia.every((val, index) => val === secuencia[index])) {
-            puntaje += 10;
-            labelScore.textContent = puntaje;
-            iniciar();
-        } else {
-            gameOver();
-        }
-    }
-}
-
-function gameOver() {
-    confirmacion = false;
+      iniciar();
+      }, 200);
+ }else{
+     confirmacion = false;
     p.classList.add('Fin-show');
-    gameStatus.style.display = 'none'; // Ocultar "Juego en curso"
+ }
+ }
 
-    labelHighscoreFinal.textContent = highscore;
+ Reiniciar.addEventListener('click', function () {
+       p.classList.remove('Fin-show');
+       ronda = 0;
+       a = 0;
+       b = 0;
+       c = 0;
+       d = 0;
+       i = 0;
+       f = 0;
+       g = 0;
+       h = 0;
+       iniciar();  
+      });
 
-    if (puntaje > highscore) {
-        highscore = puntaje;
-        localStorage.setItem('highscore', highscore);
-    }
-}
+      quinto.addEventListener('click', function () {
+         p.classList.remove('Fin-show');
+         ronda = 0;
+         a = 0;
+         b = 0;
+         c = 0;
+         d = 0;
+         i = 0;
+         f = 0;
+         g = 0;
+         h = 0;
+         iniciar();  
+        });
+       
 
-Reiniciar.addEventListener('click', () => {
-    confirmacion = true;
-    p.classList.remove('Fin-show');
-    ronda = 0;
-    puntaje = 0;
-    labelScore.textContent = puntaje;
-    iniciar();
-});
+Comenzar.addEventListener('click', function () {
+   if(confirmacion){
+      p.classList.remove('Fin-show');
+      labelScore.textContent = puntaje;
+      iniciar();  
+     }
+      });
 
-Comenzar.addEventListener('click', () => {
-    confirmacion = true;
-    p.classList.remove('Fin-show');
-    ronda = 0;
-    puntaje = 0;
-    labelScore.textContent = puntaje;
-    iniciar();
-});
+    rojo.addEventListener('click', (e)=>{
+         i++;
+         prueba = i + f + h + g;
+         if(ronda ===  prueba){
+            console.log(111);
+            setTimeout(() => {
+               verificar();
+            }, 500);
+         }
+         if(prueba > ronda){
+            confirmacion = false;
+            p.classList.add('Fin-show'); 
+         }
+        });
 
-rojo.addEventListener('click', () => manejarClick(0));
-verde.addEventListener('click', () => manejarClick(1));
-amarillo.addEventListener('click', () => manejarClick(2));
-azul.addEventListener('click', () => manejarClick(3));
+        verde.addEventListener('click', (e)=>{
+          if(ronda != 0){
+          f++;
+          prueba = i + f + h + g;
+          if(ronda === prueba){
+            console.log(111);
+            setTimeout(() => {
+               verificar();
+            }, 500);
+          }
+          if(prueba > ronda){
+            confirmacion = false;
+            p.classList.add('Fin-show'); 
+         }
+        }
+       });
 
-function manejarClick(color) {
-    if (!confirmacion) return;
+       amarillo.addEventListener('click', (e)=>{
+         if(ronda != 0){
+         g++;
+         prueba = i + f + h + g;
+         if(ronda === prueba){
+            console.log(111);
+            setTimeout(() => {
+               verificar();
+            }, 500);
+         }
+         if(prueba > ronda){
+            confirmacion = false;
+            p.classList.add('Fin-show'); 
+         }
+        }
+       });
 
-    jugadorSecuencia.push(color);
-    iluminarColor(color);
+       azul.addEventListener('click', (e)=>{
+         if(ronda != 0){
+         h++;
+          prueba = i + f + h + g;
+         if(ronda ===  prueba){
+            console.log(111);
+            setTimeout(() => {
+               verificar();
+            }, 500);
+         }
+         if(prueba > ronda){
+            confirmacion = false;
+            p.classList.add('Fin-show'); 
+         }
+        }
+       });
 
-    verificar();
-}
-
-reiniciarJuego.addEventListener('click', () => {
-    confirmacion = true;
-    p.classList.remove('Fin-show');
-    ronda = 0;
-    puntaje = 0;
-    labelScore.textContent = puntaje;
-    iniciar();
-});
-
-menuPrincipal.addEventListener('click', () => {
-    localStorage.setItem('puntaje', puntaje);
-    window.location.href = "Index.html";
-});
+       menuPrincipal.addEventListener('click', () => {
+         localStorage.setItem('puntaje', puntaje);
+         window.location.href = "Index.html";
+     });
